@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+}
+
+model SparePart {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  cartItems   CartItem[] // Add this relation field
+}
+
+model CartItem {
+  id        Int       @id @default(autoincrement())
+  partId    Int
+  sparePart SparePart @relation(fields: [partId], references: [id], onDelete: Cascade)
+}
+
+model ContactMessage {
+  id      Int    @id @default(autoincrement())
+  name    String
+  email   String
+  message String
+}
